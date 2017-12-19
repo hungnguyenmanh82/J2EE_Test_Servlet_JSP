@@ -1,0 +1,57 @@
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+apply plugin: 'com.bmuschko.tomcat'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.3'
+    }
+}
+
+sourceCompatibility = 1.8
+
+
+repositories {
+    jcenter()
+}
+
+/*
+compileJava {
+    options.warnings = false
+    options.deprecation = false
+    options.fork = true
+	options.forkOptions.executable = 'javac'
+	options.incremental = true	
+    options.compilerArgs += ["-Xdoclint:none", "-Xlint:none", "-nowarn", "-g:none"]
+}
+
+tasks.withType(JavaCompile) {
+    println '++++++Compiler args: ' + options.compilerArgs
+}
+*/
+
+dependencies {
+    def tomcatVersion = '8.5.16'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.2",
+           "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+           
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+tomcat {
+    httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
+    ajpProtocol  = 'org.apache.coyote.ajp.AjpNio2Protocol'
+}
+
+
+dependencies {
+    providedCompile 'org.apache.tomcat:tomcat-catalina:8.5.16'
+}
